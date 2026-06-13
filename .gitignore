@@ -1,0 +1,14 @@
+# Maxfiy sozlamalar — HECH QACHON GitHub'ga yuklanmaydi
+.env
+
+# Baza fayli (har serverda o'ziniki)
+orders.db
+
+# Python keshi
+__pycache__/
+*.pyc
+
+# Virtual muhit
+venv/
+.venv/
+env/
