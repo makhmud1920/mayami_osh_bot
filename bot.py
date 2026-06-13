@@ -491,8 +491,22 @@ def main():
     app.add_handler(CallbackQueryHandler(noop, pattern="^noop$"))
     app.add_handler(CallbackQueryHandler(clear_cart, pattern="^clear$"))
 
-    print("Bot ishga tushdi...")
-    app.run_polling()
+    # Render (yoki boshqa web hosting) PORT va tashqi URL beradi -> webhook rejimi.
+    # Aks holda (lokal kompyuter) -> polling rejimi.
+    port = int(os.environ.get("PORT", "0"))
+    webhook_base = os.environ.get("RENDER_EXTERNAL_URL") or os.environ.get("WEBHOOK_URL", "")
+
+    if port and webhook_base:
+        print(f"Webhook rejimi: {webhook_base}")
+        app.run_webhook(
+            listen="0.0.0.0",
+            port=port,
+            url_path=BOT_TOKEN,
+            webhook_url=f"{webhook_base.rstrip('/')}/{BOT_TOKEN}",
+        )
+    else:
+        print("Polling rejimi (lokal)...")
+        app.run_polling()
 
 
 if __name__ == "__main__":
